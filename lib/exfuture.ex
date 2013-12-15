@@ -9,13 +9,40 @@ defmodule ExFuture do
 
   defexception Error, message: nil
 
+  defmacro future([do: content]) do
+    f = quote do
+      fn -> unquote(content) end
+    end
+    IO.inspect f
+    IO.inspect arity_of(f)
+    IO.inspect wrap_fun(f, 0)
+  end
+
   defmacro new(fun) do
     wrap_fun(fun, arity_of(fun))
   end
 
+  defp wrap_fun(fun, 0) do
+    quote do
+      fn ->
+        spawn_link fn ->
+          value = try do
+            { :ok, unquote(fun).() }
+        rescue
+          e -> { :error, e }
+        end
+
+        receive do
+          pid ->
+            pid <- { self, value }
+          end
+        end
+      end
+    end
+  end
+
   defp wrap_fun(fun, arity) do
     args = Enum.map(1..arity, fn x -> { :"x#{x}", [], nil } end)
-
     quote do
       fn(unquote_splicing(args)) ->
         spawn_link fn ->

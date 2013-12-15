@@ -1,7 +1,24 @@
 defmodule ExFutureTest do
   use ExUnit.Case
   import CompileAssertion
-  require ExFuture
+  #require ExFuture
+  import ExFuture
+
+  # test "future block" do
+  #   #x = 3
+  #   f = future do
+  #     3 * 3
+  #   end
+  #   IO.inspect f
+  #   f1 = f.()
+  #   assert 9 == ExFuture.value(f1)
+  # end
+
+  test "future with no arguments" do
+    f = ExFuture.new(fn -> 3 end)
+    f1 = f.()
+    assert 3 == ExFuture.value(f1)
+  end
 
   test "two futures" do
     f = ExFuture.new(fn x -> x end)
