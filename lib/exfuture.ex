@@ -22,6 +22,10 @@ defmodule ExFuture do
     wrap_fun(fun, arity_of(fun))
   end
 
+  defmacro new(fun, arity) do
+    wrap_fun(fun, arity)
+  end
+
   defp wrap_fun(fun, arity) do
     args = init_args(arity)
 

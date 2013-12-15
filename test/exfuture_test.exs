@@ -61,4 +61,11 @@ defmodule ExFutureTest do
   test "calling a future with a non function value raises an error" do
     assert_compile_fail ExFuture.Error, "import ExFuture; ExFuture.new(10)"
   end
+
+  test "a future with function and arity" do
+    func = fn x, y -> x + y end
+    f = ExFuture.new(func, 2)
+    f1 = f.(3, 4)
+    assert 7 == ExFuture.value(f1)
+  end
 end
