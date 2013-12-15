@@ -38,7 +38,7 @@ defmodule ExFuture do
     Enum.count(args)
   end
 
-  defp arity_of({ fun_name, _, [{ :/, _, [_, arity] }] }) when fun_name == :function or fun_name == :& do
+  defp arity_of({ fun_name, _, [{ :/, _, [_, arity] }] }) when fun_name == :& do
     arity
   end
 
