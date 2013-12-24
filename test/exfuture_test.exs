@@ -29,10 +29,23 @@ defmodule ExFutureTest do
 
   def square(x), do: x * x
   test "parallel map" do
-    v = [1,2,3]
+    v = [1, 2, 3]
           |> Enum.map(ExFuture.new(&square/1))
           |> Enum.map(&ExFuture.value(&1))
     assert v == [1, 4, 9]
+  end
+
+  test "parallel map with future/resolve macro" do
+    v = [1, 2, 3]
+          |> Enum.map(future(x) do x * 2 end)
+          |> Enum.map(resolve)
+    assert v == [2, 4, 6]
+  end
+
+  test "resolve macro" do
+    i = 3
+    f = future do i * 2 end
+    assert resolve(f.()) == 6
   end
 
   test "future with no arguments" do

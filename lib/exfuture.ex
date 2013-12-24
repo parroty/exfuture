@@ -10,7 +10,10 @@ defmodule ExFuture do
   defexception Error, message: nil
 
   @doc """
-  future macro with not argument
+  future macro with no argument. The content will be start executing right after this macro call.
+     future do
+       3 * 3
+     end
   """
   defmacro future([do: content]) do
     f = quote do
@@ -20,7 +23,11 @@ defmodule ExFuture do
   end
 
   @doc """
-  future macro with arguments
+  future macro with arguments.
+  The content will be start executing once arguments are being passed as arguments.
+     future({x, y}) do
+       x + y
+     end
   """
   defmacro future(tuple, [do: content]) when is_tuple(tuple) do
     f = quote do
@@ -31,6 +38,10 @@ defmodule ExFuture do
 
   @doc """
   future macro with single argument (without tuple quoting)
+  The content will be start executing once arguments are being passed as arguments.
+     future(x) do
+       x * x
+     end
   """
   defmacro future(arg, [do: content]) do
     f = quote do
@@ -39,6 +50,15 @@ defmodule ExFuture do
     wrap_fun(f, 1)
   end
 
+  defmacro resolve do
+    quote do
+      fn(x) -> ExFuture.value(x) end
+    end
+  end
+
+  def resolve(f) do
+    ExFuture.value(f)
+  end
 
   defmacro new(fun) do
     wrap_fun(fun, arity_of(fun))
@@ -94,6 +114,10 @@ defmodule ExFuture do
     quote do unquote(fun).(unquote_splicing(args)) end
   end
 
+  @doc """
+  Resolve the value of the future. If the value is not ready yet,
+  it waits until the value becomes ready or reaches the timeout.
+  """
   def value(pid, timeout // :infinity, default // { :error, :timeout }) do
     unless Process.alive? pid do
       raise Error, message: "exhausted"
