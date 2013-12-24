@@ -9,56 +9,11 @@ defmodule ExFuture do
 
   defexception Error, message: nil
 
-  @doc """
-  future macro with no argument. The content will be start executing right after this macro call.
-     future do
-       3 * 3
-     end
-  """
-  defmacro future([do: content]) do
-    f = quote do
-      fn -> unquote(content) end
-    end
-    wrap_fun(f, 0) |> call_fun([])
-  end
-
-
-  @doc """
-  future macro with arguments.
-  The content will be start executing once arguments are being passed as arguments.
-     future({x, y}) do
-       x + y
-     end
-  """
-  defmacro future(tuple, [do: content]) when is_tuple(tuple) do
-    f = quote do
-      fn(unquote(tuple)) -> unquote(content) end
-    end
-    wrap_fun(f, 1)
-  end
-
-  @doc """
-  future macro with single argument (without tuple quoting)
-  The content will be start executing once arguments are being passed as arguments.
-     future(x) do
-       x * x
-     end
-  """
-  defmacro future(arg, [do: content]) do
-    f = quote do
-      fn(unquote(arg)) -> unquote(content) end
-    end
-    wrap_fun(f, 1)
-  end
-
-  defmacro resolve do
+  defmacro __using__(_opts // []) do
     quote do
-      fn(x) -> ExFuture.value(x) end
+      require ExFuture
+      import ExFuture.Helper
     end
-  end
-
-  def resolve(f) do
-    ExFuture.value(f)
   end
 
   defmacro new(fun) do
@@ -69,7 +24,7 @@ defmodule ExFuture do
     wrap_fun(fun, arity)
   end
 
-  defp wrap_fun(fun, arity) do
+  def wrap_fun(fun, arity) do
     args = init_args(arity)
 
     quote do
