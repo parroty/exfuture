@@ -17,20 +17,6 @@ defmodule ExFuture.Helper do
   end
 
   @doc """
-  future macro with arguments.
-  The content will be start executing once arguments are being passed as arguments.
-     future({x, y}) do
-       x + y
-     end
-  """
-  defmacro future(tuple, [do: content]) when is_tuple(tuple) do
-    f = quote do
-      fn(unquote(tuple)) -> unquote(content) end
-    end
-    wrap_fun(f, 1)
-  end
-
-  @doc """
   future macro with single argument (without tuple quoting)
   The content will be start executing once arguments are being passed as arguments.
      future(x) do
@@ -48,13 +34,11 @@ defmodule ExFuture.Helper do
     ExFuture.wrap_fun(fun, arity)
   end
 
-  defmacro resolve do
-    quote do
-      fn(x) -> ExFuture.value(x) end
-    end
+  def resolve(timeout // :infinity, default // { :error, :timeout }) do
+    fn(x) -> ExFuture.value(x, timeout, default) end
   end
 
-  def resolve(f) do
-    ExFuture.value(f)
+  def value(f, timeout // :infinity, default // { :error, :timeout }) do
+    ExFuture.value(f, timeout, default)
   end
 end
