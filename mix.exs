@@ -10,7 +10,7 @@ defmodule ExFuture.Mixfile do
 
   # Configuration for the OTP application
   def application do
-    [mod: { ExFuture, [] }]
+    []
   end
 
   # Returns the list of dependencies in the format:
