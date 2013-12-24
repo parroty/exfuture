@@ -24,11 +24,17 @@ defmodule ExFuture.HelperTest do
     assert 9 == value(f.(3))
   end
 
-  test "parallel map with future/resolve macro" do
+  test "parallel map with future/resolve macro using collection" do
     v = [1, 2, 3]
           |> Enum.map(future(x) do x * 2 end)
           |> Enum.map(resolve)
     assert v == [2, 4, 6]
   end
 
+  test "parallel map with future/resolve macro using range" do
+    v = 1..10
+          |> Enum.map(future(x) do x * 2 end)
+          |> Enum.map(resolve)
+    assert v == Enum.map(1..10, fn(x) -> x * 2 end)
+  end
 end
