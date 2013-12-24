@@ -13,9 +13,14 @@ defmodule ExFuture do
     f = quote do
       fn -> unquote(content) end
     end
-    IO.inspect f
-    IO.inspect arity_of(f)
-    IO.inspect wrap_fun(f, 0)
+    wrap_fun(f, 0)
+  end
+
+  defmacro future(arg, [do: content]) do
+    f = quote do
+      fn(unquote(arg)) -> unquote(content) end
+    end
+    wrap_fun(f, 1)
   end
 
   defmacro new(fun) do
