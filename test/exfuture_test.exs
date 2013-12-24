@@ -7,8 +7,7 @@ defmodule ExFutureTest do
     f = future do
       3 * 3
     end
-    f1 = f.()
-    assert 9 == ExFuture.value(f1)
+    assert 9 == resolve(f)
   end
 
   test "future block with one argument" do
@@ -16,7 +15,7 @@ defmodule ExFutureTest do
       x * x
     end
     f1 = f.(3)
-    assert 9 == ExFuture.value(f1)
+    assert 9 == resolve(f1)
   end
 
   test "future block with multiple arguments" do
@@ -24,7 +23,7 @@ defmodule ExFutureTest do
       x + y
     end
     f1 = f.({1, 2})
-    assert 3 == ExFuture.value(f1)
+    assert 3 == resolve(f1)
   end
 
   def square(x), do: x * x
@@ -45,7 +44,7 @@ defmodule ExFutureTest do
   test "resolve macro" do
     i = 3
     f = future do i * 2 end
-    assert resolve(f.()) == 6
+    assert resolve(f) == 6
   end
 
   test "future with no arguments" do

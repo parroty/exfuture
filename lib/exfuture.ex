@@ -19,8 +19,9 @@ defmodule ExFuture do
     f = quote do
       fn -> unquote(content) end
     end
-    wrap_fun(f, 0)
+    wrap_fun(f, 0) |> call_fun([])
   end
+
 
   @doc """
   future macro with arguments.
