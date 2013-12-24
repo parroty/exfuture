@@ -9,6 +9,9 @@ defmodule ExFuture do
 
   defexception Error, message: nil
 
+  @doc """
+  future macro with not argument
+  """
   defmacro future([do: content]) do
     f = quote do
       fn -> unquote(content) end
@@ -16,12 +19,26 @@ defmodule ExFuture do
     wrap_fun(f, 0)
   end
 
+  @doc """
+  future macro with arguments
+  """
+  defmacro future(tuple, [do: content]) when is_tuple(tuple) do
+    f = quote do
+      fn(unquote(tuple)) -> unquote(content) end
+    end
+    wrap_fun(f, 1)
+  end
+
+  @doc """
+  future macro with single argument (without tuple quoting)
+  """
   defmacro future(arg, [do: content]) do
     f = quote do
       fn(unquote(arg)) -> unquote(content) end
     end
     wrap_fun(f, 1)
   end
+
 
   defmacro new(fun) do
     wrap_fun(fun, arity_of(fun))

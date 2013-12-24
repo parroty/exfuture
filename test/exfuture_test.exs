@@ -19,6 +19,14 @@ defmodule ExFutureTest do
     assert 9 == ExFuture.value(f1)
   end
 
+  test "future block with multiple arguments" do
+    f = future({x, y}) do
+      x + y
+    end
+    f1 = f.({1, 2})
+    assert 3 == ExFuture.value(f1)
+  end
+
   test "future with no arguments" do
     f = ExFuture.new(fn -> 3 * 3 end)
     f1 = f.()
