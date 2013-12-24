@@ -4,7 +4,7 @@ defmodule ExFuture.Mixfile do
   def project do
     [ app: :exfuture,
       version: "0.0.1",
-      elixir: "~> 0.11.3-dev",
+      elixir: ">= 0.11.0",
       deps: deps ]
   end
 
