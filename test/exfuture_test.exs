@@ -27,6 +27,14 @@ defmodule ExFutureTest do
     assert 3 == ExFuture.value(f1)
   end
 
+  def square(x), do: x * x
+  test "parallel map" do
+    v = [1,2,3]
+          |> Enum.map(ExFuture.new(&square/1))
+          |> Enum.map(&ExFuture.value(&1))
+    assert v == [1, 4, 9]
+  end
+
   test "future with no arguments" do
     f = ExFuture.new(fn -> 3 * 3 end)
     f1 = f.()
