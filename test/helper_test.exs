@@ -37,4 +37,15 @@ defmodule ExFuture.HelperTest do
           |> Enum.map(resolve)
     assert v == Enum.map(1..10, fn(x) -> x * 2 end)
   end
+
+  test "parallel map for getting html pages" do
+    HTTPotion.start
+    HttpServer.start(path: "/test", port: 4000, response: "Custom Response")
+
+    links = List.duplicate("http://localhost:4000/test", 10)
+    htmls = links
+              |> Enum.map(future(x) do HTTPotion.get(x).body end)
+              |> Enum.map(resolve)
+    assert htmls == List.duplicate("Custom Response", 10)
+  end
 end

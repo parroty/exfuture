@@ -1,0 +1,6 @@
+[ "cowboy": {:git, "git://github.com/extend/cowboy.git", "9f33a20d9425daf7491836e73f503c206cc170be", []},
+  "cowlib": {:git, "git://github.com/extend/cowlib.git", "34a39ef28ca841fb9233ce9df3ec654eb321c5e5", [{:ref, "0.3.0"}]},
+  "http_server": {:git, "git://github.com/parroty/http_server.git", "44034b6a53d7d93befbfd96bac2cacab7da71b6f", []},
+  "httpotion": {:git, "git://github.com/myfreeweb/httpotion.git", "f41ad7b86cf0de5ce2830323290b30f55df17f17", []},
+  "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "d824491d37449763ac44398f8494731e0c1418c1", []},
+  "ranch": {:git, "git://github.com/extend/ranch.git", "41705752ffc7e3ecb96eef8374015ead4ca7f699", [{:ref, "0.8.5"}]} ]

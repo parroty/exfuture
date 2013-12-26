@@ -5,7 +5,7 @@ defmodule ExFuture.Mixfile do
     [ app: :exfuture,
       version: "0.0.1",
       elixir: ">= 0.11.0",
-      deps: deps ]
+      deps: deps(Mix.env) ]
   end
 
   # Configuration for the OTP application
@@ -18,7 +18,17 @@ defmodule ExFuture.Mixfile do
   #
   # To specify particular versions, regardless of the tag, do:
   # { :barbat, "~> 0.1", github: "elixir-lang/barbat" }
-  defp deps do
+  def deps(:test) do
+    deps(:dev)
+  end
+
+  def deps(:dev) do
+    deps(:prod) ++
+      [ {:httpotion, github: "myfreeweb/httpotion"},
+        {:http_server, github: "parroty/http_server"} ]
+  end
+
+  def deps(:prod) do
     []
   end
 end
