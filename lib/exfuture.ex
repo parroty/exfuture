@@ -32,16 +32,23 @@ defmodule ExFuture do
         spawn_link fn ->
           value = try do
             { :ok, unquote(call_fun(fun, args)) }
-        rescue
-          e -> { :error, e }
-        end
-
-        receive do
-          pid ->
-            pid <- { self, value }
+          rescue
+            e -> { :error, e }
           end
+
+          ExFuture.do_receive(value)
         end
       end
+    end
+  end
+
+  def do_receive(value) do
+    receive do
+      {pid, :keep} ->
+        pid <- { self, value }
+        do_receive(value)
+      {pid, _} ->
+        pid <- { self, value }
     end
   end
 
@@ -74,11 +81,11 @@ defmodule ExFuture do
   Resolve the value of the future. If the value is not ready yet,
   it waits until the value becomes ready or reaches the timeout.
   """
-  def value(pid, timeout // :infinity, default // { :error, :timeout }) do
+  def value(pid, param // nil, timeout // :infinity, default // { :error, :timeout }) do
     unless Process.alive? pid do
       raise Error, message: "exhausted"
     end
-    pid <- self
+    pid <- {self, param}
     receive do
       { ^pid, { :ok, value } } -> value
       { ^pid, { :error, e } }  -> raise e

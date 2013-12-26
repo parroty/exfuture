@@ -39,6 +39,15 @@ defmodule ExFutureTest do
     end
   end
 
+  test "exhaustion doesn't occur if keep param is specified" do
+    f = ExFuture.new(fn x -> x end).(1)
+    assert 1 == ExFuture.value(f, :keep)
+    assert 1 == ExFuture.value(f)
+    assert_raise ExFuture.Error, "exhausted", fn ->
+      ExFuture.value f
+    end
+  end
+
   test "a future with multiple arguments" do
     f = ExFuture.new(fn x, y, z -> x + y + z end)
     f1 = f.(1, 2, 3)
