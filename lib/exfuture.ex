@@ -44,11 +44,11 @@ defmodule ExFuture do
 
   def do_receive(value) do
     receive do
-      {pid, :keep} ->
+      { pid, keep } ->
         pid <- { self, value }
-        do_receive(value)
-      {pid, _} ->
-        pid <- { self, value }
+        if keep do
+          do_receive(value)
+        end
     end
   end
 
@@ -81,11 +81,17 @@ defmodule ExFuture do
   Resolve the value of the future. If the value is not ready yet,
   it waits until the value becomes ready or reaches the timeout.
   """
-  def value(pid, param // nil, timeout // :infinity, default // { :error, :timeout }) do
+  def value(pid, params // []) do
+    keep    = params[:keep] || false
+    timeout = params[:timeout] || :infinity
+    default = params[:default] || { :error, :timeout }
+
     unless Process.alive? pid do
       raise Error, message: "exhausted"
     end
-    pid <- {self, param}
+
+    pid <- {self, keep}
+
     receive do
       { ^pid, { :ok, value } } -> value
       { ^pid, { :error, e } }  -> raise e

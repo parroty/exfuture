@@ -37,7 +37,7 @@ defmodule ExFuture.Helper do
   @doc """
   Retrive value from the future.
   """
-  def value(f, param // nil, timeout // :infinity, default // { :error, :timeout }) do
-    ExFuture.value(f, param, timeout, default)
+  def value(f, params // []) do
+    ExFuture.value(f, params)
   end
 end
