@@ -2,6 +2,10 @@ defmodule ExFuture.HelperTest do
   use ExUnit.Case
   use ExFuture
 
+  setup_all do
+    HTTPotion.start
+  end
+
   test "future block" do
     f = future do
       3 * 3
@@ -39,7 +43,6 @@ defmodule ExFuture.HelperTest do
   end
 
   test "parallel map for getting html pages" do
-    HTTPotion.start
     HttpServer.start(path: "/test", port: 4000,
                      response: "Custom Response", wait_time: 1000)
 
@@ -57,5 +60,12 @@ defmodule ExFuture.HelperTest do
     assert(time >= 1_000_000 and time <= 2_000_000)
 
     assert htmls == List.duplicate("Custom Response", 10)
+  end
+
+  test "value(future) raise exception if acuiring value fails" do
+    f = future do
+      HTTPotion.get("http://localhost:1111")
+    end
+    assert_raise HTTPotion.HTTPError, fn -> value(f) end
   end
 end
