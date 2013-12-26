@@ -34,10 +34,6 @@ defmodule ExFuture.Helper do
     ExFuture.wrap_fun(fun, arity)
   end
 
-  def resolve(timeout // :infinity, default // { :error, :timeout }) do
-    fn(x) -> ExFuture.value(x, timeout, default) end
-  end
-
   def value(f, timeout // :infinity, default // { :error, :timeout }) do
     ExFuture.value(f, timeout, default)
   end
