@@ -29,6 +29,7 @@ defmodule ExFuture.HelperTest do
 
   test "parallel map for getting html pages" do
     HTTPotion.start
+    # Dummy http server to return a response after 1 second.
     HttpServer.start(path: "/test", port: 4000,
                      response: "Custom Response", wait_time: 1000)
 
