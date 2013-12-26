@@ -1,6 +1,6 @@
 defmodule ExFuture.Helper do
   @doc """
-  future macro with no argument. The content will be start executing right after this macro call.
+  Create future with no argument. The content will be start executing right after this macro call.
      future do
        3 * 3
      end
@@ -17,7 +17,7 @@ defmodule ExFuture.Helper do
   end
 
   @doc """
-  future macro with single argument (without tuple quoting)
+  Create future with single argument (without tuple quoting)
   The content will be start executing once arguments are being passed as arguments.
      future(x) do
        x * x
@@ -34,6 +34,9 @@ defmodule ExFuture.Helper do
     ExFuture.wrap_fun(fun, arity)
   end
 
+  @doc """
+  Retrive value from the future.
+  """
   def value(f, timeout // :infinity, default // { :error, :timeout }) do
     ExFuture.value(f, timeout, default)
   end
