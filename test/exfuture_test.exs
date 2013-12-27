@@ -105,4 +105,11 @@ defmodule ExFutureTest do
       ExFuture.wait(f)
     end) == "value = argument error\n"
   end
+
+  test "map on future for async chaining" do
+    i = 3
+    f1 = ExFuture.new(fn -> i * 3 end).()
+    f2 = ExFuture.map(f1, fn(x) -> x * 3 end)
+    assert 27 == ExFuture.value(f2)
+  end
 end

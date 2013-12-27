@@ -33,6 +33,7 @@ defmodule ExFuture do
             { :ok, v }    -> ExFuture.fire_on_success(self, v)
             { :error, e } -> ExFuture.fire_on_failure(self, e)
           end
+
           ExFuture.wait_for_request(value)
         end
       end
@@ -136,5 +137,17 @@ defmodule ExFuture do
   """
   def on_failure(pid, callback) do
     ExFuture.Store.push({pid, :on_failure}, callback)
+  end
+
+  @doc """
+  Map operation for future for chaining.
+  """
+  defmacro map(pid, fun) do
+    quote do
+      spawn_link fn ->
+        value = ExFuture.value(unquote(pid))
+        ExFuture.wait_for_request({:ok, unquote(fun).(value)})
+      end
+    end
   end
 end

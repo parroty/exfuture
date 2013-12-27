@@ -40,4 +40,13 @@ defmodule ExFuture.Helper do
   def value(f, params // []) do
     ExFuture.value(f, params)
   end
+
+  @doc """
+  Map operation for future for chaining.
+  """
+  defmacro map(pid, fun) do
+    quote do
+      ExFuture.map(unquote(pid), unquote(fun))
+    end
+  end
 end
