@@ -50,3 +50,9 @@ defmodule ExFuture.HelperTest do
   end
 end
 ```
+
+### Examples
+Some more exmaples.
+
+https://github.com/parroty/exfuture/blob/master/test/exfuture_test.exs
+https://github.com/parroty/exfuture/blob/master/test/helper_test.exs
