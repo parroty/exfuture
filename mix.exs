@@ -5,7 +5,8 @@ defmodule ExFuture.Mixfile do
     [ app: :exfuture,
       version: "0.0.1",
       elixir: ">= 0.11.0",
-      deps: deps(Mix.env) ]
+      deps: deps(Mix.env),
+      test_coverage: [tool: ExCoveralls] ]
   end
 
   # Configuration for the OTP application
@@ -25,7 +26,8 @@ defmodule ExFuture.Mixfile do
   def deps(:dev) do
     deps(:prod) ++
       [ {:httpotion, github: "myfreeweb/httpotion"},
-        {:http_server, github: "parroty/http_server"} ]
+        {:http_server, github: "parroty/http_server"},
+        {:excoveralls, github: "parroty/excoveralls"} ]
   end
 
   def deps(:prod) do
