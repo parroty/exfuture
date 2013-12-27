@@ -30,6 +30,11 @@ defmodule ExFuture.HelperTest do
     assert 9 == value(f.(3))
   end
 
+  test "future block with one function argument" do
+    f = future(fn(x) -> x * x end)
+    assert 9 == value(f.(3))
+  end
+
   test "parallel map with future/value macro using collection" do
     v = [1, 2, 3]
           |> Enum.map(future(&(&1 * 2)))
