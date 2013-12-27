@@ -51,7 +51,7 @@ defmodule ExFuture.HelperTest do
 
   test "map on future for async chaining" do
     i = 1
-    f1 = future do i * 2 end
+    f1 = future(i * 2)
     f2 = map(f1, &(&1 * 3))
     f3 = map(f2, &(&1 * 4))
     assert 24 == value(f3)

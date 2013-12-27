@@ -13,12 +13,23 @@ defmodule ExFuture.Helper do
   end
 
   @doc """
-  Create future with single argument (without tuple quoting).
+  Create future with single function argument (without tuple quoting).
   The content will be start executing once arguments are being passed as arguments.
      future(fn -> 3 * 3 end)
   """
-  defmacro future(fun) do
-    ExFuture.wrap_fun(fun, 1)
+  defmacro future({:fn, _, _} = fun), do: ExFuture.wrap_fun(fun, 1)
+  defmacro future({:&, _, _} = fun), do:  ExFuture.wrap_fun(fun, 1)
+
+  @doc """
+  Create future with single value argument (without tuple quoting).
+  The content will be start executing once arguments are being passed as arguments.
+     future(3)
+  """
+  defmacro future(value) do
+    f = quote do
+      fn -> unquote(value) end
+    end
+    ExFuture.wrap_fun(f, 0) |> call_fun
   end
 
   @doc """
