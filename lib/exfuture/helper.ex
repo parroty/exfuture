@@ -9,15 +9,20 @@ defmodule ExFuture.Helper do
     f = quote do
       fn -> unquote(content) end
     end
-    wrap_fun(f, 0) |> call_fun
-  end
-
-  defp call_fun(fun) do
-    quote do unquote(fun).() end
+    ExFuture.wrap_fun(f, 0) |> call_fun
   end
 
   @doc """
-  Create future with single argument (without tuple quoting)
+  Create future with single argument (without tuple quoting).
+  The content will be start executing once arguments are being passed as arguments.
+     future(fn -> 3 * 3 end)
+  """
+  defmacro future(fun) do
+    ExFuture.wrap_fun(fun, 1)
+  end
+
+  @doc """
+  Create future with single argument (without tuple quoting).
   The content will be start executing once arguments are being passed as arguments.
      future(x) do
        x * x
@@ -27,11 +32,11 @@ defmodule ExFuture.Helper do
     f = quote do
       fn(unquote(arg)) -> unquote(content) end
     end
-    wrap_fun(f, 1)
+    ExFuture.wrap_fun(f, 1)
   end
 
-  defp wrap_fun(fun, arity) do
-    ExFuture.wrap_fun(fun, arity)
+  defp call_fun(fun) do
+    quote do unquote(fun).() end
   end
 
   @doc """

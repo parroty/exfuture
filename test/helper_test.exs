@@ -32,14 +32,14 @@ defmodule ExFuture.HelperTest do
 
   test "parallel map with future/value macro using collection" do
     v = [1, 2, 3]
-          |> Enum.map(future(x) do x * 2 end)
+          |> Enum.map(future(&(&1 * 2)))
           |> Enum.map(&(value(&1)))
     assert v == [2, 4, 6]
   end
 
   test "parallel map with future/value macro using range" do
     v = 1..10
-          |> Enum.map(future(x) do x * 2 end)
+          |> Enum.map(future(&(&1 * 2)))
           |> Enum.map(&(value(&1)))
     assert v == Enum.map(1..10, fn(x) -> x * 2 end)
   end
@@ -53,7 +53,7 @@ defmodule ExFuture.HelperTest do
 
     s = :erlang.now
     htmls = links
-              |> Enum.map(future(x) do HTTPotion.get(x).body end)
+              |> Enum.map(future(&(HTTPotion.get(&1).body)))
               |> Enum.map(&(value(&1)))
 
     # It should take more than 1 second, but it should be less than
