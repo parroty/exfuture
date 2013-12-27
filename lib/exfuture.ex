@@ -1,18 +1,11 @@
 defmodule ExFuture do
-  use Application.Behaviour
-
-  # See http://elixir-lang.org/docs/stable/Application.Behaviour.html
-  # for more information on OTP Applications
-  def start(_type, _args) do
-    ExFuture.Supervisor.start_link
-  end
-
   defexception Error, message: nil
 
   defmacro __using__(_opts // []) do
     quote do
       require ExFuture
       import ExFuture.Helper
+      ExFuture.Store.start
     end
   end
 
@@ -36,18 +29,39 @@ defmodule ExFuture do
             e -> { :error, e }
           end
 
-          ExFuture.do_receive(value)
+          case value do
+            { :ok, v }    -> ExFuture.fire_on_success(self, v)
+            { :error, e } -> ExFuture.fire_on_failure(self, e)
+          end
+          ExFuture.wait_for_request(value)
         end
       end
     end
   end
 
-  def do_receive(value) do
+  def fire_on_success(pid, value) do
+    fire_callbacks({pid, :on_success}, value)
+  end
+
+  def fire_on_failure(pid, error) do
+    fire_callbacks({pid, :on_failure}, error.message)
+  end
+
+  defp fire_callbacks(key, value) do
+    ExFuture.Store.get(key) |> Enum.each(fn(fun) -> fun.(value) end)
+    ExFuture.Store.delete(key)
+  end
+
+  @doc """
+  Wait for future value reference to arrive.
+  If keep flag is set as true, keeps maitanining the value.
+  """
+  def wait_for_request(value) do
     receive do
       { pid, keep } ->
         pid <- { self, value }
         if keep do
-          do_receive(value)
+          wait_for_request(value)
         end
     end
   end
@@ -98,5 +112,29 @@ defmodule ExFuture do
     after
       timeout -> default
     end
+  end
+
+  @doc """
+  Wait for the future value to be ready. It doesn't return value itself
+  """
+  def wait(pid) do
+    pid <- {self, true}
+    receive do
+      { ^pid, _ } -> nil
+    end
+  end
+
+  @doc """
+  Specify callback function which will be triggered when future value retrieval succeeds.
+  """
+  def on_success(pid, callback) do
+    ExFuture.Store.push({pid, :on_success}, callback)
+  end
+
+  @doc """
+  Specify callback function which will be triggered when future value retrieval fails.
+  """
+  def on_failure(pid, callback) do
+    ExFuture.Store.push({pid, :on_failure}, callback)
   end
 end

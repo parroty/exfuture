@@ -1,9 +1,11 @@
 defmodule ExFuture.HelperTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: :false
   use ExFuture
 
   setup_all do
+    ExFuture.Store.start
     HTTPotion.start
+    :ok
   end
 
   test "future block" do

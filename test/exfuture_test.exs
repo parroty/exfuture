@@ -1,7 +1,13 @@
 defmodule ExFutureTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: :false
   import CompileAssertion
+  import ExUnit.CaptureIO
   use ExFuture
+
+  setup_all do
+    ExFuture.Store.start
+    :ok
+  end
 
   def square(x), do: x * x
   test "parallel map" do
@@ -73,5 +79,30 @@ defmodule ExFutureTest do
     f = ExFuture.new(func, 2)
     f1 = f.(3, 4)
     assert 7 == ExFuture.value(f1)
+  end
+
+  test "single on_success callback" do
+    assert capture_io(fn ->
+      f = ExFuture.new(fn -> 3 * 3 end).()
+      ExFuture.on_success(f, fn(x) -> IO.puts "value = #{x}" end)
+      ExFuture.wait(f)
+    end) == "value = 9\n"
+  end
+
+  test "multiple on_success callbacks" do
+    assert capture_io(fn ->
+      f = ExFuture.new(fn -> 3 * 3 end).()
+      ExFuture.on_success(f, fn(x) -> IO.puts "value1 = #{x}" end)
+      ExFuture.on_success(f, fn(x) -> IO.puts "value2 = #{x}" end)
+      ExFuture.wait(f)
+    end) == "value2 = 9\nvalue1 = 9\n"
+  end
+
+  test "single on_failure callback" do
+    assert capture_io(fn ->
+      f = ExFuture.new(fn -> HTTPotion.get("http://localhost:1111") end).()
+      ExFuture.on_failure(f, fn(x) -> IO.puts "value = #{x}" end)
+      ExFuture.wait(f)
+    end) == "value = argument error\n"
   end
 end
