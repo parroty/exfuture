@@ -65,4 +65,13 @@ defmodule ExFuture.Helper do
       ExFuture.map(unquote(pid), unquote(fun))
     end
   end
+
+  @doc """
+  Map operation for future for chaining.
+  """
+  defmacro zip(pid1, pid2, fun) do
+    quote do
+      ExFuture.zip(unquote(pid1), unquote(pid2), unquote(fun))
+    end
+  end
 end

@@ -83,4 +83,11 @@ defmodule ExFuture.HelperTest do
     f3 = map(f2, &(&1 * 4))
     assert 24 == value(f3)
   end
+
+  test "zip on future for async chaining" do
+    f1 = future(1)
+    f2 = future(2)
+    f3 = zip(f1, f2, &(&1 + &2))
+    assert 3 == value(f3)
+  end
 end

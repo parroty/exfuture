@@ -140,13 +140,26 @@ defmodule ExFuture do
   end
 
   @doc """
-  Map operation for future for chaining.
+  Provide map operation for the future.
   """
   defmacro map(pid, fun) do
     quote do
       spawn_link fn ->
         value = ExFuture.value(unquote(pid))
         ExFuture.wait_for_request({:ok, unquote(fun).(value)})
+      end
+    end
+  end
+
+  @doc """
+  Provide zip operation for the future.
+  """
+  defmacro zip(pid1, pid2, fun) do
+    quote do
+      spawn_link fn ->
+        value1 = ExFuture.value(unquote(pid1))
+        value2 = ExFuture.value(unquote(pid2))
+        ExFuture.wait_for_request({:ok, unquote(fun).(value1, value2)})
       end
     end
   end

@@ -112,4 +112,11 @@ defmodule ExFutureTest do
     f2 = ExFuture.map(f1, fn(x) -> x * 3 end)
     assert 27 == ExFuture.value(f2)
   end
+
+  test "zip on future for async chaining" do
+    f1 = ExFuture.new(fn -> 1 end).()
+    f2 = ExFuture.new(fn -> 2 end).()
+    f3 = ExFuture.zip(f1, f2, fn(x, y) -> x + y end)
+    assert 3 == ExFuture.value(f3)
+  end
 end
