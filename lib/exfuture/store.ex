@@ -1,6 +1,6 @@
 defmodule ExFuture.Store do
   @moduledoc """
-  Provides ETS based data store.
+  Provide ETS based data store.
   """
   @ets_table :exfuture
 

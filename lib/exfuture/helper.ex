@@ -1,4 +1,8 @@
 defmodule ExFuture.Helper do
+  @moduledoc """
+  Provide helper macros for ExFuture operations.
+  """
+
   @doc """
   Create future with no argument. The content will be start executing right after this macro call.
      future do

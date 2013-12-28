@@ -1,4 +1,8 @@
 defmodule ExFuture do
+  @moduledoc """
+  Provide future functionalities.
+  """
+
   defexception Error, message: nil
 
   defmacro __using__(_opts // []) do
@@ -9,10 +13,16 @@ defmodule ExFuture do
     end
   end
 
+  @doc """
+  Create future from a function.
+  """
   defmacro new(fun) do
     wrap_fun(fun, arity_of(fun))
   end
 
+  @doc """
+  Create future from a function with specific arity information.
+  """
   defmacro new(fun, arity) do
     wrap_fun(fun, arity)
   end
@@ -30,8 +40,8 @@ defmodule ExFuture do
           end
 
           case value do
-            { :ok, v }    -> ExFuture.fire_on_success(self, v)
-            { :error, e } -> ExFuture.fire_on_failure(self, e)
+            { :ok, v }    -> ExFuture.trigger_on_success(self, v)
+            { :error, e } -> ExFuture.trigger_on_failure(self, e)
           end
 
           ExFuture.wait_for_request(value)
@@ -40,15 +50,21 @@ defmodule ExFuture do
     end
   end
 
-  def fire_on_success(pid, value) do
-    fire_callbacks({pid, :on_success}, value)
+  @doc """
+  Fire on_success callback when future value becomes ready.
+  """
+  def trigger_on_success(pid, value) do
+    trigger_callbacks({pid, :on_success}, value)
   end
 
-  def fire_on_failure(pid, error) do
-    fire_callbacks({pid, :on_failure}, error.message)
+  @doc """
+  Fire on_failure callback when future value becomes ready.
+  """
+  def trigger_on_failure(pid, error) do
+    trigger_callbacks({pid, :on_failure}, error.message)
   end
 
-  defp fire_callbacks(key, value) do
+  defp trigger_callbacks(key, value) do
     ExFuture.Store.get(key) |> Enum.each(fn(fun) -> fun.(value) end)
     ExFuture.Store.delete(key)
   end
