@@ -14,10 +14,32 @@ defmodule ExFuture do
   end
 
   @doc """
-  Create future from a function.
+  Create future.
   """
-  defmacro new(fun) do
-    wrap_fun(fun, arity_of(fun))
+  defmacro new(arg) do
+    if is_func(arg) do
+      wrap_fun(arg, arity_of(arg))
+    else
+      from_value(arg)
+    end
+  end
+
+  defp is_func(fun) do
+    case fun do
+      {:fn, _, _} -> true
+      {:&, _, _}  -> true
+      _           -> false
+    end
+  end
+
+  @doc """
+  Create future from value.
+  """
+  def from_value(value) do
+    f = quote do
+      fn -> unquote(value) end
+    end
+    ExFuture.wrap_fun(f, 0) |> call_fun([])
   end
 
   @doc """
@@ -96,10 +118,6 @@ defmodule ExFuture do
 
   defp arity_of({ fun_name, _, [{ :/, _, [_, arity] }] }) when fun_name == :function or fun_name == :& do
     arity
-  end
-
-  defp arity_of(_) do
-    raise Error, message: "Future.new/1 only takes functions as an argument."
   end
 
   defp init_args(0), do: []

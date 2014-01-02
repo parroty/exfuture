@@ -1,6 +1,5 @@
 defmodule ExFutureTest do
   use ExUnit.Case, async: :false
-  import CompileAssertion
   import ExUnit.CaptureIO
   use ExFuture
 
@@ -68,10 +67,6 @@ defmodule ExFutureTest do
     f = ExFuture.new(&addition/2)
     f1 = f.(1,2)
     assert 3 == ExFuture.value(f1)
-  end
-
-  test "calling a future with a non function value raises an error" do
-    assert_compile_fail ExFuture.Error, "import ExFuture; ExFuture.new(10)"
   end
 
   test "a future with function and arity" do
@@ -144,5 +139,11 @@ defmodule ExFutureTest do
     f2 = ExFuture.new(fn -> 2 end).()
     f3 = ExFuture.zip(f1, f2, fn(x, y) -> x + y end)
     assert 3 == ExFuture.value(f3)
+  end
+
+  test "reduce on future" do
+    f = lc v inlist [1, 2, 3], do: ExFuture.new(v)
+    sum = Enum.reduce(f, 0, fn(x, acc) -> ExFuture.value(x) + acc end)
+    assert 6 == sum
   end
 end

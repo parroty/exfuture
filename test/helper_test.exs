@@ -88,4 +88,9 @@ defmodule ExFuture.HelperTest do
     f3 = zip(f1, f2, &(&1 + &2))
     assert 3 == value(f3)
   end
+
+  test "reduce on future" do
+    f = lc v inlist [1, 2, 3], do: future(v)
+    assert 6 == Enum.reduce(f, 0, &(value(&1) + &2))
+  end
 end

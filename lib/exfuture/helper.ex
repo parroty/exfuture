@@ -30,10 +30,7 @@ defmodule ExFuture.Helper do
      future(3)
   """
   defmacro future(value) do
-    f = quote do
-      fn -> unquote(value) end
-    end
-    ExFuture.wrap_fun(f, 0) |> call_fun
+    ExFuture.from_value(value)
   end
 
   @doc """
