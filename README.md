@@ -70,7 +70,7 @@ end
 ```
 
 ### Examples
-Some more exmaples.
+Some more examples.
 
 https://github.com/parroty/exfuture/blob/master/test/exfuture_test.exs
 https://github.com/parroty/exfuture/blob/master/test/helper_test.exs
