@@ -51,10 +51,20 @@ defmodule ExFuture.HelperTest do
 
   test "map on future for async chaining" do
     i = 1
-    f1 = future(i * 2)
-    f2 = map(f1, &(&1 * 3))
-    f3 = map(f2, &(&1 * 4))
-    assert 24 == value(f3)
+    f = future(i * 2) |> map(&(&1 * 3)) |> map(&(&1 * 4))
+    assert 24 == value(f)
+  end
+
+  test "zip on future for async chaining" do
+    f1 = future(1)
+    f2 = future(2)
+    f3 = zip(f1, f2, &(&1 + &2))
+    assert 3 == value(f3)
+  end
+
+  test "reduce on future" do
+    f = lc v inlist [1, 2, 3], do: future(v)
+    assert 6 == Enum.reduce(f, 0, &(value(&1) + &2))
   end
 end
 ```
