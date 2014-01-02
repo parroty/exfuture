@@ -55,13 +55,15 @@ defmodule ExFuture do
   """
   def trigger_on_success(pid, value) do
     trigger_callbacks({pid, :on_success}, value)
+    trigger_callbacks({pid, :on_complete}, {:on_success, value})
   end
 
   @doc """
-  Fire on_failure callback when future value becomes ready.
+  Fire on_failure callback when future value retrieval failed.
   """
   def trigger_on_failure(pid, error) do
     trigger_callbacks({pid, :on_failure}, error.message)
+    trigger_callbacks({pid, :on_complete}, {:on_failure, error.message})
   end
 
   defp trigger_callbacks(key, value) do
@@ -148,6 +150,7 @@ defmodule ExFuture do
 
   @doc """
   Specify callback function which will be triggered when future value retrieval succeeds.
+  It returns retrieved value.
   """
   def on_success(pid, callback) do
     ExFuture.Store.push({pid, :on_success}, callback)
@@ -155,9 +158,18 @@ defmodule ExFuture do
 
   @doc """
   Specify callback function which will be triggered when future value retrieval fails.
+  It returns error message.
   """
   def on_failure(pid, callback) do
     ExFuture.Store.push({pid, :on_failure}, callback)
+  end
+
+  @doc """
+  Specify callback function which will be triggered when future value completes.
+  It returns either of {:on_success, value} or {:on_falure, error_message}
+  """
+  def on_complete(pid, callback) do
+    ExFuture.Store.push({pid, :on_complete}, callback)
   end
 
   @doc """

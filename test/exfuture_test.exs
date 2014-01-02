@@ -106,6 +106,32 @@ defmodule ExFutureTest do
     end) == "value = argument error\n"
   end
 
+  test "on_complete callback with success case" do
+    assert capture_io(fn ->
+      f = ExFuture.new(fn -> 3 * 3 end).()
+      ExFuture.on_complete(f, fn(x) ->
+        case x do
+          {:on_success, v} -> IO.puts "success with value = #{v}"
+          {:on_failure, e} -> IO.puts "failure with error = #{e}"
+        end
+      end)
+      ExFuture.wait(f)
+    end) == "success with value = 9\n"
+  end
+
+  test "on_complete callback with failure case" do
+    assert capture_io(fn ->
+      f = ExFuture.new(fn -> HTTPotion.get("http://localhost:1111") end).()
+      ExFuture.on_complete(f, fn(x) ->
+        case x do
+          {:on_success, v} -> IO.puts "success with value = #{v}"
+          {:on_failure, e} -> IO.puts "failure with error = #{e}"
+        end
+      end)
+      ExFuture.wait(f)
+    end) == "failure with error = argument error\n"
+  end
+
   test "map on future for async chaining" do
     i = 3
     f1 = ExFuture.new(fn -> i * 3 end).()
