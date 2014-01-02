@@ -214,4 +214,19 @@ defmodule ExFuture do
       end
     end
   end
+
+  @doc """
+  Convert List(Future(v)) to Future(List(v)).
+  """
+  defmacro sequence(list) do
+    quote do
+      if is_list(unquote(list)) do
+        ExFuture.new(fn ->
+          Enum.map(unquote(list), fn(x) -> ExFuture.value(x) end)
+        end).()
+      else
+        raise "The specified argument is not a list."
+      end
+    end
+  end
 end

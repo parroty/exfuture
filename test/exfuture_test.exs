@@ -141,9 +141,22 @@ defmodule ExFutureTest do
     assert 3 == ExFuture.value(f3)
   end
 
-  test "reduce on future" do
+  test "reduce on future by Future.traverse" do
     f = lc v inlist [1, 2, 3], do: ExFuture.new(v)
     sum = Enum.reduce(f, 0, fn(x, acc) -> ExFuture.value(x) + acc end)
     assert 6 == sum
+  end
+
+  test "reduce on future by Future.sequence" do
+    f1 = lc v inlist [1, 2, 3], do: ExFuture.new(v)
+    f2 = ExFuture.sequence(f1)
+    sum = Enum.reduce(ExFuture.value(f2), 0, fn(x, acc) -> x + acc end)
+    assert 6 == sum
+  end
+
+  test "Future.sequence fails for non list argument" do
+    assert_raise RuntimeError, fn ->
+      ExFuture.sequence(3)
+    end
   end
 end
