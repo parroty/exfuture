@@ -87,6 +87,11 @@ defmodule ExFuture do
     Enum.count(args)
   end
 
+  # Added for elixir v0.12.1 or later
+  defp arity_of({ :fn, _, [ { :->, _, [args, _] }] }) do
+    Enum.count(args)
+  end
+
   defp arity_of({ fun_name, _, [{ :/, _, [_, arity] }] }) when fun_name == :function or fun_name == :& do
     arity
   end
