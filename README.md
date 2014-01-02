@@ -1,4 +1,4 @@
-# ExFuture [![Build Status](https://secure.travis-ci.org/parroty/exfuture.png?branch=master "Build Status")](http://travis-ci.org/parroty/exfuture)
+# ExFuture [![Build Status](https://secure.travis-ci.org/parroty/exfuture.png?branch=master "Build Status")](http://travis-ci.org/parroty/exfuture) [![Coverage Status](https://coveralls.io/repos/parroty/exfuture/badge.png)](https://coveralls.io/r/parroty/exfuture)
 
 
 A trial implementation of future, inspired by
