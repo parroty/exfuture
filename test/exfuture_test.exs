@@ -155,7 +155,7 @@ defmodule ExFutureTest do
   end
 
   test "Future.sequence fails for non list argument" do
-    assert_raise RuntimeError, fn ->
+    assert_raise ExFuture.Error, fn ->
       ExFuture.sequence(3)
     end
   end

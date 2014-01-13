@@ -225,7 +225,7 @@ defmodule ExFuture do
           Enum.map(unquote(list), fn(x) -> ExFuture.value(x) end)
         end).()
       else
-        raise "The specified argument is not a list."
+        raise Error, message: "The specified argument is not a list"
       end
     end
   end
