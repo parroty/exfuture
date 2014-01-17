@@ -1,7 +1,7 @@
 [ "cowboy": {:git, "git://github.com/extend/cowboy.git", "9f33a20d9425daf7491836e73f503c206cc170be", []},
   "cowlib": {:git, "git://github.com/extend/cowlib.git", "34a39ef28ca841fb9233ce9df3ec654eb321c5e5", [ref: "0.3.0"]},
   "exactor": {:git, "git://github.com/sasa1977/exactor.git", "573baa559d074375900e686fc921c86fb60b1ff1", []},
-  "excoveralls": {:git, "git://github.com/parroty/excoveralls.git", "cb860b34721a3fea2c08ca0b267451c3c886c652", []},
+  "excoveralls": {:git, "git://github.com/parroty/excoveralls.git", "bff3a01679e27f43380138c3f52f30e74426bdf8", []},
   "exprintf": {:git, "git://github.com/parroty/exprintf.git", "153697ed99bc2050abbb3b17a1efc413025113f2", []},
   "http_server": {:git, "git://github.com/parroty/http_server.git", "9625c8558bdc74c4c1bcd7bdb33568760785d568", []},
   "httpotion": {:git, "git://github.com/myfreeweb/httpotion.git", "f41ad7b86cf0de5ce2830323290b30f55df17f17", []},
