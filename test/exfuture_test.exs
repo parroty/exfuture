@@ -147,16 +147,16 @@ defmodule ExFutureTest do
     assert 6 == sum
   end
 
+  test "use sequence to convert List(Future(v)) to Future(List(v))" do
+    f1 = ExFuture.sequence([ExFuture.new(3), ExFuture.new(4)])
+    f2 = ExFuture.value(f1)
+    assert f2 == [3, 4]
+  end
+
   test "reduce on future by Future.sequence" do
     f1 = lc v inlist [1, 2, 3], do: ExFuture.new(v)
     f2 = ExFuture.sequence(f1)
     sum = Enum.reduce(ExFuture.value(f2), 0, fn(x, acc) -> x + acc end)
     assert 6 == sum
-  end
-
-  test "Future.sequence fails for non list argument" do
-    assert_raise ExFuture.Error, fn ->
-      ExFuture.sequence(3)
-    end
   end
 end

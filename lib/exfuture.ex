@@ -220,13 +220,9 @@ defmodule ExFuture do
   """
   defmacro sequence(list) do
     quote do
-      if is_list(unquote(list)) do
-        ExFuture.new(fn ->
-          Enum.map(unquote(list), fn(x) -> ExFuture.value(x) end)
-        end).()
-      else
-        raise Error, message: "The specified argument is not a list"
-      end
+      ExFuture.new(fn ->
+        Enum.map(unquote(list), fn(x) -> ExFuture.value(x) end)
+      end).()
     end
   end
 end
