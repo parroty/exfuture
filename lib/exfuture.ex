@@ -100,7 +100,7 @@ defmodule ExFuture do
   def wait_for_request(value) do
     receive do
       { pid, keep } ->
-        pid <- { self, value }
+        send pid, { self, value }
         if keep do
           wait_for_request(value)
         end
@@ -146,7 +146,7 @@ defmodule ExFuture do
       raise Error, message: "exhausted"
     end
 
-    pid <- {self, keep}
+    send pid, {self, keep}
 
     receive do
       { ^pid, { :ok, value } } -> value
@@ -160,7 +160,7 @@ defmodule ExFuture do
   Wait for the future value to be ready. It doesn't return value itself
   """
   def wait(pid) do
-    pid <- {self, true}
+    send pid, {self, true}
     receive do
       { ^pid, _ } -> nil
     end
