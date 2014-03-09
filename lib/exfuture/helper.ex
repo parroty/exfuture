@@ -54,7 +54,7 @@ defmodule ExFuture.Helper do
   @doc """
   Retrive value from the future.
   """
-  def value(f, params // []) do
+  def value(f, params \\ []) do
     ExFuture.value(f, params)
   end
 

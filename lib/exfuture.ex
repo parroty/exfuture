@@ -5,7 +5,7 @@ defmodule ExFuture do
 
   defexception Error, message: nil
 
-  defmacro __using__(_opts // []) do
+  defmacro __using__(_opts \\ []) do
     quote do
       require ExFuture
       import ExFuture.Helper
@@ -137,7 +137,7 @@ defmodule ExFuture do
   Resolve the value of the future. If the value is not ready yet,
   it waits until the value becomes ready or reaches the timeout.
   """
-  def value(pid, params // []) do
+  def value(pid, params \\ []) do
     keep    = params[:keep] || false
     timeout = params[:timeout] || :infinity
     default = params[:default] || { :error, :timeout }
