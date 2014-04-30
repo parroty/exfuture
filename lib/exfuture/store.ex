@@ -12,15 +12,26 @@ defmodule ExFuture.Store do
   end
 
   def push(key, callback) do
+    key = to_atom(key)
     value = get(key)
     :ets.insert(@ets_table, {key, [callback | value]})
   end
 
   def get(key) do
+    key = to_atom(key)
     :ets.lookup(@ets_table, key)[key] || []
   end
 
   def delete(key) do
+    key = to_atom(key)
     :ets.delete(@ets_table, key)
+  end
+
+  def to_atom(key) do
+    if is_atom(key) do
+      key
+    else
+      key |> inspect |> binary_to_atom
+    end
   end
 end

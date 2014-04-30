@@ -78,7 +78,7 @@ defmodule ExFutureTest do
 
   test "single on_success callback" do
     assert capture_io(fn ->
-      f = ExFuture.new(fn -> 3 * 3 end).()
+      f = ExFuture.new(fn -> :timer.sleep(100); 3 * 3 end).()
       ExFuture.on_success(f, fn(x) -> IO.puts "value = #{x}" end)
       ExFuture.wait(f)
     end) == "value = 9\n"
@@ -86,7 +86,7 @@ defmodule ExFutureTest do
 
   test "multiple on_success callbacks" do
     assert capture_io(fn ->
-      f = ExFuture.new(fn -> 3 * 3 end).()
+      f = ExFuture.new(fn -> :timer.sleep(100); 3 * 3 end).()
       ExFuture.on_success(f, fn(x) -> IO.puts "value1 = #{x}" end)
       ExFuture.on_success(f, fn(x) -> IO.puts "value2 = #{x}" end)
       ExFuture.wait(f)
