@@ -96,9 +96,9 @@ defmodule ExFutureTest do
   test "single on_failure callback" do
     assert capture_io(fn ->
       f = ExFuture.new(fn -> HTTPotion.get("http://localhost:1111") end).()
-      ExFuture.on_failure(f, fn(x) -> IO.puts "value = #{x}" end)
+      ExFuture.on_failure(f, fn(x) -> IO.puts "value = #{x} error" end)
       ExFuture.wait(f)
-    end) == "value = argument error\n"
+    end) =~ ~r/value = .+? error\n/
   end
 
   test "on_complete callback with success case" do
@@ -124,7 +124,7 @@ defmodule ExFutureTest do
         end
       end)
       ExFuture.wait(f)
-    end) == "failure with error = argument error\n"
+    end) =~ ~r/failure with error = .+?\n/
   end
 
   test "map on future for async chaining" do
