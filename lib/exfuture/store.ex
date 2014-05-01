@@ -13,7 +13,7 @@ defmodule ExFuture.Store do
 
   def push(key, callback) do
     key = to_atom(key)
-    value = get(key)
+    value = ExFuture.Store.get(key) # add full module name for avoiding weird error at excoveralls
     :ets.insert(@ets_table, {key, [callback | value]})
   end
 
