@@ -3,7 +3,9 @@ defmodule ExFuture do
   Provide future functionalities.
   """
 
-  defexception Error, message: nil
+  defmodule Error do
+    defexception message: nil
+  end
 
   defmacro __using__(_opts \\ []) do
     quote do

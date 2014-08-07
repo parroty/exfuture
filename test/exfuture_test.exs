@@ -142,7 +142,7 @@ defmodule ExFutureTest do
   end
 
   test "reduce on future by Future.traverse" do
-    f = lc v inlist [1, 2, 3], do: ExFuture.new(v)
+    f = for v <- [1, 2, 3], do: ExFuture.new(v)
     sum = Enum.reduce(f, 0, fn(x, acc) -> ExFuture.value(x) + acc end)
     assert 6 == sum
   end
@@ -154,7 +154,7 @@ defmodule ExFutureTest do
   end
 
   test "reduce on future by Future.sequence" do
-    f1 = lc v inlist [1, 2, 3], do: ExFuture.new(v)
+    f1 = for v <- [1, 2, 3], do: ExFuture.new(v)
     f2 = ExFuture.sequence(f1)
     sum = Enum.reduce(ExFuture.value(f2), 0, fn(x, acc) -> x + acc end)
     assert 6 == sum

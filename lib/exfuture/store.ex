@@ -31,7 +31,7 @@ defmodule ExFuture.Store do
     if is_atom(key) do
       key
     else
-      key |> inspect |> binary_to_atom
+      key |> inspect |> String.to_atom
     end
   end
 end
