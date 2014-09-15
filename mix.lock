@@ -1,9 +1,9 @@
-%{"cowboy": {:git, "git://github.com/extend/cowboy.git", "db52494371ea249f38d51108c7d79cf487ff6374", [tag: "0.9.0"]},
-  "cowlib": {:git, "git://github.com/extend/cowlib.git", "63298e8e160031a70efff86a1acde7e7db1fcda6", [ref: "0.4.0"]},
-  "excoveralls": {:git, "git://github.com/parroty/excoveralls.git", "9715d3c6942fd2287b8b2547c444ec8c5559e390", []},
-  "http_server": {:git, "git://github.com/parroty/http_server.git", "fbc68ed552996e0d38863e8f9e59dfd64df43d88", []},
-  "httpotion": {:git, "git://github.com/myfreeweb/httpotion.git", "1419c64468483d192cc017f18de3412f9dca7fb4", []},
+%{"cowboy": {:package, "1.0.0"},
+  "cowlib": {:package, "1.0.0"},
+  "excoveralls": {:git, "git://github.com/parroty/excoveralls.git", "5a239515d386670c918e5125494f115324e41b30", []},
+  "http_server": {:git, "git://github.com/parroty/http_server.git", "1be5c7e25499a418aeacc4c0f9af308ac3c60aed", []},
+  "httpotion": {:git, "git://github.com/myfreeweb/httpotion.git", "1a7d8ac3d5f7c2da5d48496acf3adfc9f73fcc69", []},
   "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "7871e2ebe8811efb64e1917e2de455fa87e8dfe3", [tag: "v4.1.0"]},
   "jsex": {:package, "2.0.0"},
   "jsx": {:package, "2.0.4"},
-  "ranch": {:git, "git://github.com/extend/ranch.git", "5df1f222f94e08abdcab7084f5e13027143cc222", [ref: "0.9.0"]}}
+  "ranch": {:package, "1.0.0"}}
