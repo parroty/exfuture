@@ -1,9 +1,9 @@
 %{"cowboy": {:package, "1.0.0"},
   "cowlib": {:package, "1.0.0"},
-  "excoveralls": {:git, "git://github.com/parroty/excoveralls.git", "5a239515d386670c918e5125494f115324e41b30", []},
+  "excoveralls": {:git, "git://github.com/parroty/excoveralls.git", "ccb6e0fb20021195b03e590dbc6b0ce8bd780f7d", []},
   "http_server": {:git, "git://github.com/parroty/http_server.git", "1be5c7e25499a418aeacc4c0f9af308ac3c60aed", []},
   "httpotion": {:git, "git://github.com/myfreeweb/httpotion.git", "1a7d8ac3d5f7c2da5d48496acf3adfc9f73fcc69", []},
   "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "7871e2ebe8811efb64e1917e2de455fa87e8dfe3", [tag: "v4.1.0"]},
   "jsex": {:package, "2.0.0"},
-  "jsx": {:package, "2.0.4"},
+  "jsx": {:package, "2.1.1"},
   "ranch": {:package, "1.0.0"}}

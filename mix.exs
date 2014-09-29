@@ -4,7 +4,7 @@ defmodule ExFuture.Mixfile do
   def project do
     [ app: :exfuture,
       version: "0.0.1",
-      elixir: ">= 0.11.0",
+      elixir: ">= 0.14.3",
       deps: deps(Mix.env),
       test_coverage: [tool: ExCoveralls] ]
   end
