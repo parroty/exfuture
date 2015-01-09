@@ -63,7 +63,7 @@ defmodule ExFuture.HelperTest do
   end
 
   test "reduce on future" do
-    f = lc v inlist [1, 2, 3], do: future(v)
+    f = for v <- [1, 2, 3], do: future(v)
     assert 6 == Enum.reduce(f, 0, &(value(&1) + &2))
   end
 end
