@@ -3,7 +3,7 @@
   "excoveralls": {:hex, :excoveralls, "0.3.11"},
   "exjsx": {:hex, :exjsx, "3.2.0"},
   "hackney": {:hex, :hackney, "1.3.0"},
-  "http_server": {:git, "git://github.com/parroty/http_server.git", "1be5c7e25499a418aeacc4c0f9af308ac3c60aed", []},
+  "http_server": {:git, "git://github.com/parroty/http_server.git", "e7560fdd21449731edd41b91e567d9d71726df6c", []},
   "httpotion": {:hex, :httpotion, "2.1.0"},
   "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "d2e369ff42666c3574b8b7ec26f69027895c4d94", [tag: "v4.1.1"]},
   "idna": {:hex, :idna, "1.0.2"},
