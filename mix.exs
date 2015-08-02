@@ -5,7 +5,7 @@ defmodule ExFuture.Mixfile do
     [ app: :exfuture,
       version: "0.0.1",
       elixir: ">= 1.0.0",
-      deps: deps(Mix.env),
+      deps: deps,
       test_coverage: [tool: ExCoveralls] ]
   end
 
@@ -19,18 +19,12 @@ defmodule ExFuture.Mixfile do
   #
   # To specify particular versions, regardless of the tag, do:
   # { :barbat, "~> 0.1", github: "elixir-lang/barbat" }
-  def deps(:test) do
-    deps(:dev)
-  end
-
-  def deps(:dev) do
-    deps(:prod) ++
-      [ {:httpotion, github: "myfreeweb/httpotion"},
-        {:http_server, github: "parroty/http_server"},
-        {:excoveralls, github: "parroty/excoveralls"} ]
-  end
-
-  def deps(:prod) do
-    []
+  def deps do
+    [
+      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.1"},
+      {:httpotion, "~> 2.1.0"},
+      {:excoveralls, "~> 0.3", only: [:dev, :test]},
+      {:http_server, github: "parroty/http_server"},
+    ]
   end
 end

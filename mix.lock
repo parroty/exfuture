@@ -1,9 +1,13 @@
 %{"cowboy": {:hex, :cowboy, "1.0.2"},
   "cowlib": {:hex, :cowlib, "1.0.1"},
-  "excoveralls": {:git, "git://github.com/parroty/excoveralls.git", "ccb6e0fb20021195b03e590dbc6b0ce8bd780f7d", []},
+  "excoveralls": {:hex, :excoveralls, "0.3.11"},
+  "exjsx": {:hex, :exjsx, "3.2.0"},
+  "hackney": {:hex, :hackney, "1.3.0"},
   "http_server": {:git, "git://github.com/parroty/http_server.git", "1be5c7e25499a418aeacc4c0f9af308ac3c60aed", []},
-  "httpotion": {:git, "git://github.com/myfreeweb/httpotion.git", "1a7d8ac3d5f7c2da5d48496acf3adfc9f73fcc69", []},
-  "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "7871e2ebe8811efb64e1917e2de455fa87e8dfe3", [tag: "v4.1.0"]},
+  "httpotion": {:hex, :httpotion, "2.1.0"},
+  "ibrowse": {:git, "git://github.com/cmullaparthi/ibrowse.git", "d2e369ff42666c3574b8b7ec26f69027895c4d94", [tag: "v4.1.1"]},
+  "idna": {:hex, :idna, "1.0.2"},
   "jsex": {:hex, :jsex, "2.0.0"},
   "jsx": {:hex, :jsx, "2.6.2"},
-  "ranch": {:hex, :ranch, "1.1.0"}}
+  "ranch": {:hex, :ranch, "1.1.0"},
+  "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"}}
